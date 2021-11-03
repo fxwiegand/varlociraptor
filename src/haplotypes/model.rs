@@ -35,7 +35,7 @@ impl Marginal {
         data: &Data,
         haplotype_index: usize,
         fractions: &mut Vec<AlleleFreq>,
-        joint_prob: &F,
+        joint_prob: &mut F,
     ) -> LogProb {
         if haplotype_index == self.n_haplotypes {
             let event = HaplotypeFractions(fractions.to_vec());

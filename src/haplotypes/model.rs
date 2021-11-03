@@ -26,11 +26,13 @@ impl HaplotypeFractions {
 #[derive(Debug, new)]
 pub(crate) struct Marginal {
     #[new(default)]
-    n_haplotypes: usize
+    n_haplotypes: usize,
 }
 
 impl Marginal {
-    pub(crate) fn calc_marginal<F: FnMut(&<Self as model::Marginal>::Event, &<Self as model::Marginal>::Data) -> LogProb>(
+    pub(crate) fn calc_marginal<
+        F: FnMut(&<Self as model::Marginal>::Event, &<Self as model::Marginal>::Data) -> LogProb,
+    >(
         &self,
         data: &Data,
         haplotype_index: usize,
@@ -39,12 +41,12 @@ impl Marginal {
     ) -> LogProb {
         if haplotype_index == self.n_haplotypes {
             let event = HaplotypeFractions(fractions.to_vec());
-            joint_prob(&event,data)
+            joint_prob(&event, data)
         } else {
             let density = |fraction| {
                 let mut fractions = fractions.clone();
                 fractions.push(fraction);
-                self.calc_marginal(data,haplotype_index + 1, &mut fractions, joint_prob)
+                self.calc_marginal(data, haplotype_index + 1, &mut fractions, joint_prob)
             };
             adaptive_integration::ln_integrate_exp(
                 density,
@@ -68,7 +70,7 @@ impl model::Marginal for Marginal {
     ) -> LogProb {
         let mut fractions: Vec<AlleleFreq> = Vec::new();
         self.calc_marginal(data, 0, &mut fractions, joint_prob)
-        }
+    }
 }
 
 #[derive(Debug, new)]

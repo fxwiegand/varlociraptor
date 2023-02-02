@@ -58,7 +58,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Auto aplly clippy lints
-        uses: fxwiegand/plumber-ferris@v1
+        uses: fxwiegand/plumber-ferris@v1.0.1
         with:
           toolchain: stable
           

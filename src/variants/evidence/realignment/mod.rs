@@ -93,7 +93,7 @@ pub(crate) trait Realigner {
                     let max_window =
                         (self.max_window() as usize).saturating_sub((qend - qstart) / 2);
                     let mut read_offset = qstart.saturating_sub(max_window);
-                    let mut read_end = cmp::min(qend + max_window as usize, record.seq_len());
+                    let mut read_end = cmp::min(qend + max_window, record.seq_len());
 
                     // correct for reads that enclose the entire variant while that exceeds the maximum pattern len
                     let exceed = (read_end - read_offset)

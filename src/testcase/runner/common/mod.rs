@@ -351,8 +351,8 @@ pub trait Testcase {
                         expr.exec()
                             .map(|v| v.as_bool().unwrap_or(false))
                             .unwrap_or(false),
-                        "{:?} did not return true",
-                        expr
+                        "{}",
+                        "{expr:?} did not return true"
                     );
                 }
             }
@@ -378,8 +378,8 @@ pub trait Testcase {
                         expr.exec()
                             .map(|v| v.as_bool().unwrap_or(false))
                             .unwrap_or(false),
-                        "{:?} did not return true",
-                        expr
+                        "{}",
+                        "{expr:?} did not return true"
                     );
                 }
             }
@@ -402,7 +402,7 @@ pub trait Testcase {
 
     fn index_reference(&self, path: &dyn AsRef<Path>) {
         Command::new("samtools")
-            .args(&["faidx", path.as_ref().to_str().unwrap()])
+            .args(["faidx", path.as_ref().to_str().unwrap()])
             .status()
             .expect("failed to create fasta index");
     }

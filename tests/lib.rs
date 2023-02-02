@@ -173,7 +173,7 @@ testcase!(test_alt_locus_bias_01, exact);
 testcase!(test_alt_locus_bias_02, exact);
 
 fn basedir(test: &str) -> String {
-    format!("tests/resources/{}", test)
+    format!("tests/resources/{test}")
 }
 
 fn cleanup_file(f: &str) {
@@ -190,7 +190,7 @@ fn control_fdr(
     vartype: Option<&varlociraptor::variants::model::VariantType>,
 ) {
     let basedir = basedir(test);
-    let output = format!("{}/calls.filtered.bcf", basedir);
+    let output = format!("{basedir}/calls.filtered.bcf");
     cleanup_file(&output);
     let event_strs: Vec<varlociraptor::SimpleEvent> = events
         .iter()
@@ -199,7 +199,7 @@ fn control_fdr(
         })
         .collect();
     varlociraptor::filtration::fdr::control_fdr(
-        &format!("{}/calls.matched.bcf", basedir),
+        format!("{basedir}/calls.matched.bcf"),
         Some(&output),
         &event_strs,
         vartype,
@@ -212,7 +212,7 @@ fn control_fdr(
 fn assert_call_number(test: &str, expected_calls: usize) {
     let basedir = basedir(test);
 
-    let mut reader = bcf::Reader::from_path(format!("{}/calls.filtered.bcf", basedir)).unwrap();
+    let mut reader = bcf::Reader::from_path(format!("{basedir}/calls.filtered.bcf")).unwrap();
 
     let calls = reader.records().map(|r| r.unwrap()).collect_vec();
 

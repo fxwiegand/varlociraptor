@@ -209,9 +209,9 @@ impl FormulaTerminal {
 impl std::fmt::Display for Formula {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let fmt_operand = |formula: &Formula| match formula {
-            Formula::Terminal(_) => format!("{}", formula),
-            Formula::Negation { operand } if operand.is_terminal() => format!("{}", formula),
-            _ => format!("({})", formula),
+            Formula::Terminal(_) => format!("{formula}"),
+            Formula::Negation { operand } if operand.is_terminal() => format!("{formula}"),
+            _ => format!("({formula})"),
         };
 
         let formatted = match self {
@@ -224,7 +224,7 @@ impl std::fmt::Display for Formula {
                 x if x > 1 => format!(
                     "{}:{{{}}}",
                     sample,
-                    vafs.iter().map(|vaf| format!("{:.3}", vaf)).join(", "),
+                    vafs.iter().map(|vaf| format!("{vaf:.3}")).join(", "),
                 ),
                 _ => "false".to_owned(),
             },
@@ -265,10 +265,10 @@ impl std::fmt::Display for Formula {
                 sample_b,
                 predicate,
             }) => {
-                format!("l2fc({}, {}) {}", sample_a, sample_b, predicate)
+                format!("l2fc({sample_a}, {sample_b}) {predicate}")
             }
         };
-        write!(f, "{}", formatted)
+        write!(f, "{formatted}")
     }
 }
 
@@ -602,13 +602,9 @@ impl Formula {
                         }
                     }
                 }
-                let operands = grouped_operands
-                    .into_iter()
-                    .map(|(_, statements)| statements)
-                    .flatten()
-                    .collect();
+                let operands = grouped_operands.into_values().flatten().collect();
 
-                Formula::Conjunction { operands: operands }
+                Formula::Conjunction { operands }
             }
             Formula::Disjunction { operands } => {
                 // collect statements per sample
@@ -947,9 +943,9 @@ impl std::fmt::Display for NormalizedFormula {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         let fmt_operand = |formula: &NormalizedFormula| match formula {
             NormalizedFormula::Atom { .. } | NormalizedFormula::Variant { .. } => {
-                format!("{}", formula)
+                format!("{formula}")
             }
-            _ => format!("({})", formula),
+            _ => format!("({formula})"),
         };
 
         let formatted = match self {
@@ -961,7 +957,7 @@ impl std::fmt::Display for NormalizedFormula {
                 x if x > 1 => format!(
                     "{}:{{{}}}",
                     sample,
-                    vafs.iter().map(|vaf| format!("{:.3}", vaf)).join(", "),
+                    vafs.iter().map(|vaf| format!("{vaf:.3}")).join(", "),
                 ),
                 _ => "false".to_owned(),
             },
@@ -998,10 +994,10 @@ impl std::fmt::Display for NormalizedFormula {
                 sample_b,
                 predicate,
             } => {
-                format!("l2fc({}, {}) {}", sample_a, sample_b, predicate)
+                format!("l2fc({sample_a}, {sample_b}) {predicate}")
             }
         };
-        write!(f, "{}", formatted)
+        write!(f, "{formatted}")
     }
 }
 
@@ -1333,7 +1329,7 @@ impl<'de> de::Visitor<'de> for VAFUniverseVisitor {
                 Ok(VAFUniverse(operands))
             }
             Err(e) => {
-                eprintln!("{}", e);
+                eprintln!("{e}");
                 Err(de::Error::invalid_value(
                     serde::de::Unexpected::Other("invalid VAF formula"),
                     &self,
@@ -1373,7 +1369,7 @@ impl<'de> de::Visitor<'de> for FormulaVisitor {
                 parse_formula(pair)
             }
             Err(e) => Err(de::Error::invalid_value(
-                serde::de::Unexpected::Other(&format!("invalid VAF formula:\n{}", e)),
+                serde::de::Unexpected::Other(&format!("invalid VAF formula:\n{e}")),
                 &self,
             )),
         }

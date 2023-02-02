@@ -324,7 +324,7 @@ mod tests {
             *observations
                 .read_observations()
                 .iter()
-                .map(|observation| biases().prob_ref(&observation))
+                .map(|observation| biases().prob_ref(observation))
                 .sum::<LogProb>()
         );
     }
@@ -348,7 +348,7 @@ mod tests {
             *observations
                 .read_observations()
                 .iter()
-                .map(|observation| biases().prob_ref(&observation))
+                .map(|observation| biases().prob_ref(observation))
                 .sum::<LogProb>()
         );
         assert!(cache.get(&evt).is_some())

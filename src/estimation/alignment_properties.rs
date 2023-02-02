@@ -303,7 +303,7 @@ impl AlignmentProperties {
         properties.max_read_len = all_stats.max_read_len;
 
         let s = if let Some(n) = num_records {
-            format!("in {} alignments", n)
+            format!("in {n} alignments")
         } else {
             "in any alignments".into()
         };
@@ -490,7 +490,7 @@ fn cigar_stats(record: &bam::Record, refseq: &[u8], allow_hardclips: bool) -> Ci
                         cigar_stats.gap_counts.incr(-(isize::try_from(l).unwrap()));
                     }
                 }
-                rpos += l as usize;
+                rpos += l;
             }
             Cigar::Ins(l) => {
                 cigar_stats.max_ins = OptionMax::max(cigar_stats.max_ins, Some(l));
@@ -526,7 +526,7 @@ fn cigar_stats(record: &bam::Record, refseq: &[u8], allow_hardclips: bool) -> Ci
                         cigar_stats.gap_counts.incr(isize::try_from(l).unwrap());
                     }
                 }
-                qpos += l as usize;
+                qpos += l;
             }
             Cigar::Match(l) | Cigar::Diff(l) | Cigar::Equal(l) => {
                 cigar_stats.num_match_bases += l as u64;
@@ -548,8 +548,8 @@ fn cigar_stats(record: &bam::Record, refseq: &[u8], allow_hardclips: bool) -> Ci
                         }
                     }
                 }
-                qpos += l as usize;
-                rpos += l as usize;
+                qpos += l;
+                rpos += l;
             }
             Cigar::SoftClip(l) => {
                 let s = norm(l);
@@ -797,7 +797,7 @@ mod tests {
             0.,
         )
         .unwrap();
-        println!("{:?}", props);
+        println!("{props:?}");
 
         if let Some(isize) = props.insert_size {
             assert_relative_eq!(isize.mean.round(), 312.0);
@@ -825,7 +825,7 @@ mod tests {
             0.,
         )
         .unwrap();
-        println!("{:?}", props);
+        println!("{props:?}");
 
         assert!(props.insert_size.is_none());
         assert_eq!(props.max_del_cigar_len, Some(2));
@@ -850,7 +850,7 @@ mod tests {
             0.,
         )
         .unwrap();
-        println!("{:?}", props);
+        println!("{props:?}");
 
         assert!(props.insert_size.is_none());
         assert_eq!(props.max_del_cigar_len, None);

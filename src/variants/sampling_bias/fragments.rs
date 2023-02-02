@@ -101,8 +101,8 @@ pub(crate) trait FragmentSamplingBias: Variant + SamplingBias {
 
                         assert!(
                             p.is_valid(),
-                            "bug: invalid probability sampling probability {:?}",
-                            p
+                            "{}",
+                            "bug: invalid probability sampling probability {p:?}"
                         );
                         Some(p)
                     }

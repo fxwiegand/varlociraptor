@@ -27,9 +27,8 @@ pub(crate) fn decode_phred() -> Result<()> {
 
         header.push_record(
             format!(
-                "##INFO=<ID={},Number=A,Type=Float,\
-                 Description=\"{}\">",
-                id, description
+                "##INFO=<ID={id},Number=A,Type=Float,\
+                 Description=\"{description}\">"
             )
             .as_bytes(),
         );

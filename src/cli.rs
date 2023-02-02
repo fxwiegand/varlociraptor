@@ -1150,7 +1150,7 @@ pub fn run(opt: Varlociraptor) -> Result<()> {
                 &sample,
                 coding_genome_size as u64,
                 mode,
-                cutoff as f64,
+                cutoff,
             )?,
             EstimateKind::AlignmentProperties {
                 reference,

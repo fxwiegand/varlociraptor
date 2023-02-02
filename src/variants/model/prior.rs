@@ -210,7 +210,7 @@ impl Prior {
             blueprint["data"]["values"] = json!(data);
             blueprint["spec"]["layer"][1]["transform"][0]["filter"]["equal"] = json!(target_sample);
             blueprint["spec"]["layer"][0]["transform"][0]["filter"] =
-                json!(format!("datum.sample != '{}'", target_sample));
+                json!(format!("datum.sample != '{target_sample}'"));
             // print to STDOUT
             println!("{}", serde_json::to_string_pretty(blueprint)?);
             Ok(())

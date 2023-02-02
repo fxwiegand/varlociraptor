@@ -212,7 +212,7 @@ impl Scenario {
             .map(|(name, formula)| {
                 let normalized = formula
                     .normalize(self, contig)
-                    .with_context(|| format!("invalid event definition for {}", name))?;
+                    .with_context(|| format!("invalid event definition for {name}"))?;
                 info!("    {}: {}", name, normalized);
                 let vaftree = VAFTree::new(&normalized, self, contig)?;
                 Ok((name.to_owned(), vaftree))
@@ -269,7 +269,7 @@ impl Scenario {
             return Err(crate::errors::Error::OverlappingEvents {
                 expressions: overlapping
                     .iter()
-                    .map(|(a1, a2, f)| format!("({:?} | {:?}) = {:?}", a1, a2, f))
+                    .map(|(a1, a2, f)| format!("({a1:?} | {a2:?}) = {f:?}"))
                     .join(", "),
             }
             .into());
@@ -326,7 +326,7 @@ impl SexPloidyDefinition {
             (SexPloidyDefinition::Specific(p), Some(s)) => p.get(&s).map_or_else(
                 || {
                     Err(errors::Error::InvalidPriorConfiguration {
-                        msg: format!("ploidy definition for {} not found", s),
+                        msg: format!("ploidy definition for {s} not found"),
                     }
                     .into())
                 },

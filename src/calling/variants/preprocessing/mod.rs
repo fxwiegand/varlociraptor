@@ -134,7 +134,7 @@ impl<R: realignment::Realigner + Clone + std::marker::Send + std::marker::Sync>
             "ALT_LOCUS",
         ] {
             header.push_record(
-                format!("##INFO=<ID={},Number=.,Type=Integer,Description=\"Varlociraptor observations (binary encoded, meant for internal use only).\">", name).as_bytes()
+                format!("##INFO=<ID={name},Number=.,Type=Integer,Description=\"Varlociraptor observations (binary encoded, meant for internal use only).\">").as_bytes()
             );
         }
 
@@ -149,11 +149,8 @@ impl<R: realignment::Realigner + Clone + std::marker::Send + std::marker::Sync>
 
         // store observation format version
         header.push_record(
-            format!(
-                "##varlociraptor_observation_format_version={}",
-                OBSERVATION_FORMAT_VERSION
-            )
-            .as_bytes(),
+            format!("##varlociraptor_observation_format_version={OBSERVATION_FORMAT_VERSION}")
+                .as_bytes(),
         );
 
         aux_info_collector.write_header_info(&mut header);

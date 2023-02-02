@@ -138,7 +138,7 @@ where
                         Err(((a, n), (b, m)))
                     }
                 })
-                .map(|(item, count)| format!("{}{}", count, item)),
+                .map(|(item, count)| format!("{count}{item}")),
             "",
         )
     } else {
@@ -148,7 +148,7 @@ where
                 .most_common()
                 .into_iter()
                 .sorted_by_key(aux_sort)
-                .map(|(item, count)| format!("{}{}", count, item)),
+                .map(|(item, count)| format!("{count}{item}")),
             "",
         )
     }
@@ -360,8 +360,7 @@ where
         assert_eq!(
             remove.len(),
             record.allele_count() as usize,
-            "bug: filter passed to filter_calls has to return a bool for each alt allele at record {}.",
-            i,
+            "bug: filter passed to filter_calls has to return a bool for each alt allele at record {i}.",
         );
 
         // Write trimmed record if any allele remains. Otherwise skip the record.
@@ -635,5 +634,5 @@ pub(crate) fn signif(float: f64, precision: usize) -> String {
     };
 
     // format with the given computed precision
-    format!("{0:.1$}", float, precision)
+    format!("{float:.precision$}")
 }

@@ -130,7 +130,7 @@ impl EditDistanceCalculation {
             let start = alignments[0].start();
             // take the last (aka first because we are mapping backwards) position for an upper bound of the putative end
             let end = cmp::min(
-                alignments.last().unwrap().start() + self.read_seq.len() + best_dist as usize,
+                alignments.last().unwrap().start() + self.read_seq.len() + best_dist,
                 emission_params.len_x(),
             );
 
@@ -156,8 +156,9 @@ impl EditDistanceCalculation {
                                 // end of the deletion is within the variant ref range.
                                 if variant_ref_range.contains(&(ref_pos))
                                     && (operation.len() > 0
-                                        || variant_ref_range
-                                            .contains(&(ref_pos + operation.len().abs() as u64)))
+                                        || variant_ref_range.contains(
+                                            &(ref_pos + operation.len().unsigned_abs() as u64),
+                                        ))
                                 {
                                     Some(operation.len())
                                 } else {
@@ -210,6 +211,6 @@ pub(crate) struct EditDistanceHit {
 
 impl EditDistanceHit {
     pub(crate) fn dist_upper_bound(&self) -> usize {
-        self.dist as usize + EDIT_BAND
+        self.dist + EDIT_BAND
     }
 }

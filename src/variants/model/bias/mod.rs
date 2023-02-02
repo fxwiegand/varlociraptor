@@ -92,12 +92,8 @@ pub(crate) trait Bias: Default + cmp::PartialEq + std::fmt::Debug {
                     // This can safe a lot of time and also avoids unexpected reporting
                     // of artifacts in ambiguous cases.
                     false
-                } else if pileup.read_observations().is_empty() {
-                    // METHOD: no reads, no need to consider for biases, hence, skip with false
-                    false
                 } else {
-                    // METHOD: not enough reads, rather consider all biases to be sure
-                    true
+                    !pileup.read_observations().is_empty()
                 }
             })
         }

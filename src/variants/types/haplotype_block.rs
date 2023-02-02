@@ -184,7 +184,7 @@ impl Variant for HaplotypeBlock {
             self.multi_locus_single_end_evidence_variants
                 .iter()
                 .enumerate()
-                .filter_map(|(i, variant)| {
+                .filter_map(|(_i, variant)| {
                     let valid = evidence
                         .into_single_end_evidence()
                         .iter()
@@ -248,14 +248,13 @@ impl Variant for HaplotypeBlock {
         let support: Vec<Option<AlleleSupport>> = self
             .single_locus_single_end_evidence_variants
             .iter()
-            .map(|variant| {
+            .flat_map(|variant| {
                 evidence
                     .into_single_end_evidence()
                     .iter()
                     .map(|evidence| variant.allele_support(evidence, alignment_properties, &[]))
                     .collect_vec()
             })
-            .flatten()
             .chain(
                 self.single_locus_paired_end_evidence_variants
                     .iter()
@@ -264,7 +263,7 @@ impl Variant for HaplotypeBlock {
             .chain(
                 self.multi_locus_single_end_evidence_variants
                     .iter()
-                    .map(|variant| {
+                    .flat_map(|variant| {
                         evidence
                             .into_single_end_evidence()
                             .iter()
@@ -272,8 +271,7 @@ impl Variant for HaplotypeBlock {
                                 variant.allele_support(evidence, alignment_properties, &[])
                             })
                             .collect_vec()
-                    })
-                    .flatten(),
+                    }),
             )
             .chain(
                 self.multi_locus_paired_end_evidence_variants
@@ -281,10 +279,7 @@ impl Variant for HaplotypeBlock {
                     .map(|variant| variant.allele_support(evidence, alignment_properties, &[])),
             )
             .collect::<Result<Vec<Option<AlleleSupport>>>>()?;
-        let mut support = support
-            .into_iter()
-            .filter_map(|support| support)
-            .collect_vec();
+        let support = support.into_iter().flatten().collect_vec();
         if support.is_empty() {
             Ok(None)
         } else {

@@ -25,7 +25,7 @@ impl Testcase for TestcaseVersion3 {
         let reference_path = self.path.join(self.reference_path());
         self.index_reference(&reference_path);
 
-        Ok(Box::new(reference_path.to_owned()))
+        Ok(Box::new(reference_path))
     }
 
     fn preprocess_options(&self, sample_name: &str) -> String {

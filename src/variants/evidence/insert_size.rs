@@ -37,8 +37,8 @@ pub(crate) fn estimate_insert_size(left: &bam::Record, right: &bam::Record) -> R
         inner_mate_distance + (left_end - left_start) as i64 + (right_end - right_start) as i64;
     assert!(
         insert_size > 0,
-        "bug: insert size {} is smaller than zero",
-        insert_size
+        "{}",
+        "bug: insert size {insert_size} is smaller than zero"
     );
 
     Ok(insert_size as u64)

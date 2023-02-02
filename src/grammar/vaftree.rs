@@ -56,7 +56,7 @@ impl<'a> IntoIterator for &'a VAFTree {
     type IntoIter = std::slice::Iter<'a, Node>;
 
     fn into_iter(self) -> Self::IntoIter {
-        (&self.inner).iter()
+        self.inner.iter()
     }
 }
 

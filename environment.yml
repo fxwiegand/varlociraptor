@@ -4,7 +4,7 @@ channels:
   - bioconda
   - nodefaults
 dependencies:
-  - alignoth=0.7.3
+  - alignoth=0.12.1
   - bcftools=1.16
   - bwa=0.7.17
   - bzip2=1.0.8

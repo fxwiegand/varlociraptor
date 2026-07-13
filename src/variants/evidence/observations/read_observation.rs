@@ -8,8 +8,8 @@ use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 use std::ops;
 use std::rc::Rc;
-use std::sync::Arc;
 use std::str;
+use std::sync::Arc;
 
 use anyhow::Result;
 use bio::stats::bayesian::bayes_factors::evidence::KassRaftery;

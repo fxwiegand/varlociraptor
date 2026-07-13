@@ -8,6 +8,7 @@ use std::collections::HashMap;
 use std::hash::{Hash, Hasher};
 use std::ops;
 use std::rc::Rc;
+use std::sync::Arc;
 use std::str;
 
 use anyhow::Result;
@@ -705,14 +706,14 @@ pub(crate) trait Observable: Variant {
 pub struct AlignmentRecord {
     #[getset(get = "pub")]
     #[deref]
-    record: Rc<bam::Record>,
+    record: Arc<bam::Record>,
     #[getset(get = "pub")]
     prob_methylation: Option<Rc<HashMap<usize, LogProb>>>,
 }
 
 impl AlignmentRecord {
     pub(crate) fn new(
-        record: Rc<bam::Record>,
+        record: Arc<bam::Record>,
         prob_methylation: Option<Rc<HashMap<usize, LogProb>>>,
     ) -> Self {
         AlignmentRecord {
